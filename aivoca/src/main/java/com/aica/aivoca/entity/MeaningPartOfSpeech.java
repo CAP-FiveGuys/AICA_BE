@@ -12,6 +12,7 @@ import jakarta.persistence.*;
 @Table(name = "meaning_partofspeech")
 public class MeaningPartOfSpeech {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "meaning_partofspeech_id")
     private Long meaningPartOfSpeechId;
 

@@ -15,13 +15,14 @@ public class VocabularyList {
     @Column(name = "voca_list_id")
     private Long vocaListId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users users;
 
     @Builder
-    public VocabularyList(Long vocaListId, User user) {
+    public VocabularyList(Long vocaListId, Users users) {
         this.vocaListId = vocaListId;
-        this.user = user;
+        this.users = users;
     }
 }

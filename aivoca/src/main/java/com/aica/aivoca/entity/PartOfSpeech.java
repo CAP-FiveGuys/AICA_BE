@@ -12,10 +12,11 @@ import jakarta.persistence.*;
 @Table(name = "part_of_speech")
 public class PartOfSpeech {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "part_id")
     private Long partId;
 
-    @Column(name = "part", nullable = false, length = 20)
+    @Column(name = "part", nullable = false, length = 10)
     private String part;
 
     @Builder

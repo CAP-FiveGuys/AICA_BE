@@ -12,11 +12,12 @@ import jakarta.persistence.*;
 @Table(name = "sentence")
 public class Sentence {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sentence_id")
     private Long sentenceId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sentence_list", nullable = false)
+    @JoinColumn(name = "sentence_list_id", nullable = false)
     private SentenceList sentenceList;
 
     @Column(columnDefinition = "TEXT", nullable = false)

@@ -12,6 +12,7 @@ import jakarta.persistence.*;
 @Table(name = "meaning")
 public class Meaning {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mean_id")
     private Long meanId;
 
@@ -19,7 +20,7 @@ public class Meaning {
     @JoinColumn(name = "word_id", nullable = false)
     private Word word;
 
-    @Column(name = "mean", nullable = false, length = 100)
+    @Column(name = "mean", nullable = false, length = 50)
     private String mean;
 
     @Builder

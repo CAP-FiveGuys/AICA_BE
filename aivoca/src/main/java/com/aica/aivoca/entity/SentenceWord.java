@@ -12,6 +12,7 @@ import jakarta.persistence.*;
 @Table(name = "sentence_word")
 public class SentenceWord {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sentence_word_id")
     private Long sentenceWordId;
 

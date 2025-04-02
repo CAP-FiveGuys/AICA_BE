@@ -12,6 +12,7 @@ import jakarta.persistence.*;
 @Table(name = "word")
 public class Word {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "word_id")
     private Long wordId;
 
@@ -19,7 +20,7 @@ public class Word {
     @JoinColumn(name = "voca_list_id", nullable = false)
     private VocabularyList vocabularyList;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, length = 100)
     private String word;
 
     @Builder

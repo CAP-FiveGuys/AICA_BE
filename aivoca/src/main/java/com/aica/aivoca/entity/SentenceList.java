@@ -12,16 +12,17 @@ import jakarta.persistence.*;
 @Table(name = "sentence_list")
 public class SentenceList {
     @Id
-    @Column(name = "sentence_list")
-    private Long sentenceList;
+    @Column(name = "sentence_list_id")
+    private Long sentenceListId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users users;
 
     @Builder
-    public SentenceList(Long sentenceList, User user) {
-        this.sentenceList = sentenceList;
-        this.user = user;
+    public SentenceList(Long sentenceListId, Users users) {
+        this.sentenceListId = sentenceListId;
+        this.users = users;
     }
 }
