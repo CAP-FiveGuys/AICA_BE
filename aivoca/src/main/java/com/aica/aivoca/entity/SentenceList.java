@@ -23,6 +23,5 @@ public class SentenceList {
     @Builder
     public SentenceList(Long sentenceListId, Users users) {
         this.sentenceListId = sentenceListId;
-        this.users = users;
     }
 }

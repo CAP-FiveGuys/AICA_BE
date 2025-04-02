@@ -23,6 +23,5 @@ public class VocabularyList {
     @Builder
     public VocabularyList(Long vocaListId, Users users) {
         this.vocaListId = vocaListId;
-        this.users = users;
     }
 }
