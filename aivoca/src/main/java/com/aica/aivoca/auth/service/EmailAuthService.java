@@ -1,6 +1,7 @@
 package com.aica.aivoca.auth.service;
 
 import com.aica.aivoca.auth.repository.EmailCodeRedisRepository;
+import com.aica.aivoca.auth.repository.EmailVerificationRepository;
 import com.aica.aivoca.global.exception.BusinessException;
 import com.aica.aivoca.global.exception.message.ErrorMessage;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.time.Duration;
 public class EmailAuthService {
 
     private final EmailCodeRedisRepository redisRepository;
+    private final EmailVerificationRepository emailVerificationRepository;
     private final JavaMailSender mailSender;
 
     public void sendEmailCode(String email) {
@@ -30,8 +32,12 @@ public class EmailAuthService {
             throw new BusinessException(ErrorMessage.INVALID_EMAIL_CODE);
         }
         redisRepository.deleteCode(email);
+
+        // 이메일 인증 상태 저장
+        emailVerificationRepository.markVerified(email);
     }
 
+    //6자리 랜덤 코드 생성
     private String generateCode() {
         return RandomStringUtils.randomAlphanumeric(6).toUpperCase();
     }
