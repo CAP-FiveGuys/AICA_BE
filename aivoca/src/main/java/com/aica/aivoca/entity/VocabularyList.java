@@ -11,17 +11,19 @@ import jakarta.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "vocabulary_list")
 public class VocabularyList {
+
     @Id
-    @Column(name = "voca_list_id")
-    private Long vocaListId;
+    @Column(name = "user_id")
+    private Long userId;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users users;
 
     @Builder
-    public VocabularyList(Long vocaListId, Users users) {
-        this.vocaListId = vocaListId;
+    public VocabularyList(Users users) {
+        this.users = users;
+        this.userId = users.getId(); // 또는 Users 클래스의 실제 getter 이름 사용
     }
 }

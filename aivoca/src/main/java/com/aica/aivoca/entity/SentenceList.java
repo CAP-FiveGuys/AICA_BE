@@ -11,17 +11,19 @@ import jakarta.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "sentence_list")
 public class SentenceList {
+
     @Id
-    @Column(name = "sentence_list_id")
-    private Long sentenceListId;
+    @Column(name = "user_id")
+    private Long userId;
 
     @MapsId
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Users users;
 
     @Builder
-    public SentenceList(Long sentenceListId, Users users) {
-        this.sentenceListId = sentenceListId;
+    public SentenceList(Users users) {
+        this.users = users;
+        this.userId = users.getId(); //
     }
 }

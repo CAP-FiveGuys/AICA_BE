@@ -14,7 +14,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long userId;
+    private Long id; // 변경: 필드명을 id로
 
     @Column(name = "username", nullable = false, length = 50)
     private String username;
@@ -23,8 +23,8 @@ public class Users {
     private String email;
 
     @Builder
-    public Users(Long userId, String username, String email) {
-        this.userId = userId;
+    public Users(Long id, String username, String email) { // 변경: userId → id
+        this.id = id;
         this.username = username;
         this.email = email;
     }
