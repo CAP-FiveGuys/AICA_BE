@@ -3,7 +3,6 @@ package com.aica.aivoca.auth.repository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
