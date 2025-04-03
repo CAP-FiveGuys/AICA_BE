@@ -1,4 +1,4 @@
-package com.aica.aivoca.entity;
+package com.aica.aivoca.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,21 +11,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id; // 변경: 필드명을 id로
+    private Long id;
 
-    @Column(name = "username", nullable = false, length = 50)
-    private String username;
+    @Column(name = "user_uid", nullable = false, unique = true, length = 50)
+    private String userId; // 사용자가 입력하는 유저 아이디
+
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
 
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
     @Builder
-    public Users(Long id, String username, String email) { // 변경: userId → id
+    public Users(Long id, String userId, String password, String email) {
         this.id = id;
-        this.username = username;
+        this.userId = userId;
+        this.password = password;
         this.email = email;
     }
 }

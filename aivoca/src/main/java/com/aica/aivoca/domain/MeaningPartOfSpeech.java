@@ -1,4 +1,4 @@
-package com.aica.aivoca.entity;
+package com.aica.aivoca.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;

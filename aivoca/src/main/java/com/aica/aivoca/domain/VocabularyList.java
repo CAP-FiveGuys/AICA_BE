@@ -1,4 +1,4 @@
-package com.aica.aivoca.entity;
+package com.aica.aivoca.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import jakarta.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "sentence_list")
-public class SentenceList {
+@Table(name = "vocabulary_list")
+public class VocabularyList {
 
     @Id
     @Column(name = "user_id")
@@ -22,8 +22,8 @@ public class SentenceList {
     private Users users;
 
     @Builder
-    public SentenceList(Users users) {
+    public VocabularyList(Users users) {
         this.users = users;
-        this.userId = users.getId(); //
+        this.userId = users.getId(); // 또는 Users 클래스의 실제 getter 이름 사용
     }
 }
