@@ -1,0 +1,16 @@
+spring:
+  mail:
+    host: smtp.gmail.com         # Gmail 기준
+    port: 587
+    username: ${MAIL_USERNAME}     # 발신 이메일 주소
+    password: ${MAIL_PASSWORD}        # 앱 비밀번호 (2단계 인증 시 필요)
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    default-encoding: UTF-8
+
+  config:
+    import: optional:dotenv:.env

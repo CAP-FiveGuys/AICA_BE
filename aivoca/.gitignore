@@ -38,4 +38,3 @@ out/
 
 ### Auth ###
 .env
-src/main/resources/application-prod.yml
