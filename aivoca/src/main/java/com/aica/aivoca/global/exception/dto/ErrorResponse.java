@@ -1,4 +1,4 @@
-package com.aica.aivoca.global.dto;
+package com.aica.aivoca.global.exception.dto;
 
 import com.aica.aivoca.global.exception.message.ErrorMessage;
 
