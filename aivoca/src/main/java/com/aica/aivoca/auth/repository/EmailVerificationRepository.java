@@ -19,7 +19,8 @@ public class EmailVerificationRepository {
     }
 
     public boolean isVerified(String email) {
-        return "true".equals(redisTemplate.opsForValue().get(PREFIX + email));
+        String value = redisTemplate.opsForValue().get(PREFIX + email);
+        return value != null && value.equals("true");
     }
 
     public void deleteVerification(String email) {
