@@ -48,6 +48,16 @@ dependencies {
 
 	// Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// JavaMailSender
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+	// Bean Validation
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+	//인증코드 랜덤 생성
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	//implementation 'me.paulschwarz:spring-dotenv:2.2.0'
 }
 
 tasks.named('test') {
