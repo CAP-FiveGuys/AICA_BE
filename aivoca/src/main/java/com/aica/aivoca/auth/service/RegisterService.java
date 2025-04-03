@@ -20,7 +20,7 @@ public class RegisterService {
 
     public void register(UserRegisterRequestDto request) {
         // 이메일 인증 여부 확인
-        if (!emailVerificationRepository.isNotVerified(request.email())) {
+        if (!emailVerificationRepository.isVerified(request.email())) {
             throw new BusinessException(ErrorMessage.EMAIL_NOT_VERIFIED);
         }
 

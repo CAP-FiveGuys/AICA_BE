@@ -18,7 +18,7 @@ public class EmailVerificationRepository {
         redisTemplate.opsForValue().set(PREFIX + email, "true", Duration.ofMinutes(10)); // 10분 유지
     }
 
-    public boolean isNotVerified(String email) {
+    public boolean isVerified(String email) {
         String value = redisTemplate.opsForValue().get(PREFIX + email);
         return value != null && value.equals("true");
     }
