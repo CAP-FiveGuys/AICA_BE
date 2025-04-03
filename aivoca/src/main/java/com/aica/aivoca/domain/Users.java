@@ -1,4 +1,4 @@
-package com.aica.aivoca.entity;
+package com.aica.aivoca.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
