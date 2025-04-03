@@ -1,6 +1,6 @@
 package com.aica.aivoca.global.exception;
 
-import com.aica.aivoca.global.dto.ErrorResponse;
+import com.aica.aivoca.global.exception.dto.ErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
