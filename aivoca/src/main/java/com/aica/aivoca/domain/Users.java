@@ -23,14 +23,18 @@ public class Users {
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
+    @Column(name = "user_nickname", nullable = false, length = 100)
+    private String userNickname;
+
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
     @Builder
-    public Users(Long id, String userId, String password, String email) {
+    public Users(Long id, String userId, String password,String userNickname, String email) {
         this.id = id;
         this.userId = userId;
         this.password = password;
+        this.userNickname = userNickname;
         this.email = email;
     }
 }
