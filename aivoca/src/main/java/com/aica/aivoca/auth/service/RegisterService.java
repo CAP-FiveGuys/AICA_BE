@@ -37,11 +37,14 @@ public class RegisterService {
         // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(request.password());
 
+        // 유저 닉네임 설정
+
         // 유저 저장
         Users user = Users.builder()
                 .userId(request.userId())
                 .email(request.email())
                 .password(encodedPassword)
+                .userNickname(request.userNickname())
                 .build();
 
         usersRepository.save(user);
