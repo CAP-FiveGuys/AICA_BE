@@ -12,6 +12,7 @@ import lombok.Builder;
 public class Word {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "word_id")
     private Long id;
 
