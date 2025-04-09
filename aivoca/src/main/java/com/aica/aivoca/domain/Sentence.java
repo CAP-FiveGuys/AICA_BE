@@ -1,32 +1,37 @@
 package com.aica.aivoca.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import jakarta.persistence.*;
+import lombok.Builder;
 
 @Entity
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@IdClass(SentenceId.class)
 @Table(name = "sentence")
+@Getter
+@NoArgsConstructor
 public class Sentence {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "sentence_id")
-    private Long sentenceId;
+    private Long id; // 사용자별 수동 삽입
+
+    @Id
+    @Column(name = "user_id")
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sentence_list_id", nullable = false)
-    private SentenceList sentenceList;
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    private Users user;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(name = "sentence", nullable = false, columnDefinition = "TEXT")
     private String sentence;
 
     @Builder
-    public Sentence(Long sentenceId, SentenceList sentenceList, String sentence) {
-        this.sentenceId = sentenceId;
-        this.sentenceList = sentenceList;
+    public Sentence(Long id, Long userId, Users user, String sentence) {
+        this.id = id;
+        this.userId = userId;
+        this.user = user;
         this.sentence = sentence;
     }
 }
