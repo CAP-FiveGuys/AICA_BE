@@ -17,6 +17,9 @@ public enum ErrorMessage {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "사용자를 찾을 수 없습니다."),
     SENTENCE_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "이미 등록된 문장입니다."),
     SENTENCE_ID_ALREADY_EXISTS(HttpStatus.CONFLICT.value(), "이미 사용 중인 문장 ID입니다."),
+    USER_ID_REQUIRED(HttpStatus.BAD_REQUEST.value(), "사용자 ID가 필요합니다."),
+    SENTENCE_ID_REQUIRED(HttpStatus.BAD_REQUEST.value(), "문장 ID가 필요합니다."),
+    SENTENCE_TEXT_REQUIRED(HttpStatus.BAD_REQUEST.value(), "문장 내용이 필요합니다."),
 
     // 서버 오류
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버에 알 수 없는 오류가 발생했습니다.");

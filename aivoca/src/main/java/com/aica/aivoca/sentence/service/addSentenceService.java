@@ -26,21 +26,26 @@ public class addSentenceService {
 
     @Transactional
     public SuccessStatusResponse<SentenceResponseDto> addSentence(SentenceRequestDto requestDto) {
-        if (requestDto.userId() == null || requestDto.sentenceId() == null) {
-            throw new CustomException(ErrorMessage.INVALID_REQUEST);
+        if (requestDto.userId() == null) {
+            throw new CustomException(ErrorMessage.USER_ID_REQUIRED);
+        }
+
+        if (requestDto.sentenceId() == null) {
+            throw new CustomException(ErrorMessage.SENTENCE_ID_REQUIRED);
+        }
+
+        if (requestDto.sentence() == null || requestDto.sentence().trim().isEmpty()) {
+            throw new CustomException(ErrorMessage.SENTENCE_TEXT_REQUIRED);
         }
 
         Users user = usersRepository.findById(requestDto.userId())
                 .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
 
-        // 문장 내용 중복 체크
         if (sentenceRepository.existsByUserAndSentence(user, requestDto.sentence())) {
             throw new CustomException(ErrorMessage.SENTENCE_ALREADY_EXISTS);
         }
 
-        // sentenceId 중복 체크
-        boolean exists = sentenceRepository.existsByIdAndUser(requestDto.sentenceId(), user);
-        if (exists) {
+        if (sentenceRepository.existsByIdAndUser(requestDto.sentenceId(), user)) {
             throw new CustomException(ErrorMessage.SENTENCE_ID_ALREADY_EXISTS);
         }
 
@@ -56,4 +61,5 @@ public class addSentenceService {
         SentenceResponseDto responseDto = new SentenceResponseDto(user.getId(), sentence.getSentence());
         return SuccessStatusResponse.of(SuccessMessage.SENTENCE_ADD_SUCCESS, responseDto);
     }
+
 }
