@@ -9,7 +9,14 @@
 - [REFACTOR] : 전면 수정, 코드 리팩토링
 - [MERGE]: 다른 브랜치와 병합
 -->
+---
+name: 기능 추가 요청
+about: 새로운 기능을 제안할 때 사용
+title: "[FEAT] 제목 (#이슈번호)"
+labels: feat
+assignees: ''
 
+---
 ## 📌 Issue
 - 무엇을 구현하려고 하는지 간단히 설명해주세요.
 
