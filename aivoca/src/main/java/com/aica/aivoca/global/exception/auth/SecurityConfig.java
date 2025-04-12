@@ -17,6 +17,7 @@ public class SecurityConfig {
 
     private static final String[] AUTH_WHITE_LIST = {
             "/api/auth/**",
+            "/api/word/**",
     };
 
     @Bean
