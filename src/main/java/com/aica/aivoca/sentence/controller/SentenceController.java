@@ -1,12 +1,15 @@
 package com.aica.aivoca.sentence.controller;
 
 import com.aica.aivoca.global.exception.dto.SuccessStatusResponse;
+import com.aica.aivoca.sentence.dto.SentenceGetResponseDto;
 import com.aica.aivoca.sentence.dto.SentenceRequestDto;
 import com.aica.aivoca.sentence.dto.SentenceResponseDto;
 import com.aica.aivoca.sentence.service.addSentenceService;
+import com.aica.aivoca.sentence.service.getSentenceService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -14,11 +17,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class SentenceController {
 
-    private final addSentenceService sentenceService;
+    private final addSentenceService addSentenceService;
+    private final getSentenceService getSentenceService;
 
     @PostMapping
-    public ResponseEntity<SuccessStatusResponse<SentenceResponseDto>> addSentence(@RequestBody SentenceRequestDto requestDto) {
-        SuccessStatusResponse<SentenceResponseDto> response = sentenceService.addSentence(requestDto);
-        return ResponseEntity.status(response.code()).body(response);
+    public SuccessStatusResponse<SentenceResponseDto> addSentence(@RequestBody SentenceRequestDto requestDto) {
+        return addSentenceService.addSentence(requestDto);
+    }
+
+    @GetMapping
+    public SuccessStatusResponse<List<SentenceGetResponseDto>> getSentences(
+            @RequestParam("userId") Long userId,
+            @RequestParam(value = "search", required = false) String search
+    ) {
+        return getSentenceService.getSentences(userId, search);
     }
 }
