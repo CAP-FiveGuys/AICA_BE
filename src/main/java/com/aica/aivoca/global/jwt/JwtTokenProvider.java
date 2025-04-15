@@ -87,10 +87,5 @@ public class JwtTokenProvider {
                 .getBody();
     }
 
-    //토큰 필터
-    public Long getUserIdFromToken(String token) {
-        Claims claims = getClaims(token);
-        return Long.parseLong(claims.getSubject()); // subject에 userId가 들어 있음
-    }
 }
 
