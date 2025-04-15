@@ -14,6 +14,7 @@ public enum SuccessMessage {
 
     // 문장 관련
     SENTENCE_ADD_SUCCESS(HttpStatus.CREATED.value(), "문장이 성공적으로 추가되었습니다."),
+    SENTENCE_GET_SUCCESS(HttpStatus.OK.value(), "문장 목록이 성공적으로 조회되었습니다."),
 
     // 단어 캐싱
     WORD_CACHED_SUCCESS(HttpStatus.CREATED.value(), "단어가 캐싱 테이블에 성공적으로 추가되었습니다."),
