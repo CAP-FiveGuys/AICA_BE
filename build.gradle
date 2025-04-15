@@ -58,6 +58,9 @@ dependencies {
 	//인증코드 랜덤 생성
 	implementation 'org.apache.commons:commons-lang3:3.12.0'
 	implementation 'me.paulschwarz:spring-dotenv:2.2.0'
+
+	//유효성 검사
+	implementation 'org.hibernate.validator:hibernate-validator'
 }
 
 tasks.named('test') {
