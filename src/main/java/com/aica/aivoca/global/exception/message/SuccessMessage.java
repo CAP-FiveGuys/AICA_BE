@@ -13,6 +13,7 @@ public enum SuccessMessage {
     REGISTER_SUCCESS(HttpStatus.CREATED.value(), "회원가입에 성공하였습니다."),
 
     // 문장 관련
+
     SENTENCE_ADD_SUCCESS(HttpStatus.CREATED.value(), "문장이 성공적으로 추가되었습니다."),
     SENTENCE_GET_SUCCESS(HttpStatus.OK.value(), "문장 목록이 성공적으로 조회되었습니다."),
 
@@ -27,6 +28,7 @@ public enum SuccessMessage {
     TOKEN_REISSUE_SUCCESS(HttpStatus.CREATED.value(), "토큰이 재발행 되었습니다."),
 
     ;
+
 
     private final int code;
     private final String message;
