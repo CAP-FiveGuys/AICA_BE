@@ -27,9 +27,9 @@ public class SentenceController {
 
     @GetMapping
     public SuccessStatusResponse<List<SentenceGetResponseDto>> getSentences(
-            @RequestParam("userId") Long userId,
             @RequestParam(value = "search", required = false) String search
     ) {
-        return getSentenceService.getSentences(userId, search);
+        return getSentenceService.getSentences(null, search); // userId는 무시됨
     }
+
 }
