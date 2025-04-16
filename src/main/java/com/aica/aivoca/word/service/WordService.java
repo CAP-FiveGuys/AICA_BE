@@ -36,48 +36,48 @@ public class WordService {
     private EntityManager em;
 
     @Transactional
-    public SuccessStatusResponse<WordResponseDto> addWordToVocabulary(WordAddRequestDto requestDto) {
-            // ✅ 1. 유저 조회
-            Users user = usersRepository.findById(requestDto.userId())
-                    .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
+    public SuccessStatusResponse<WordResponseDto> addWordToVocabulary(WordAddRequestDto requestDto, Long userId) {
+        // ✅ 1. 유저 조회
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
 
-            // ✅ 2. 단어 조회
-            Word word = wordRepository.findById(requestDto.wordId())
-                    .orElseThrow(() -> new CustomException(ErrorMessage.WORD_NOT_FOUND));
+        // ✅ 2. 단어 조회
+        Word word = wordRepository.findById(requestDto.wordId())
+                .orElseThrow(() -> new CustomException(ErrorMessage.WORD_NOT_FOUND));
 
-            // ✅ 3. 단어장 조회 or 생성
-            VocabularyList vocaList = vocabularyListRepository.findByUsers(user)
-                    .orElseGet(() -> {
-                        VocabularyList newList = VocabularyList.builder()
-                                .users(user)
-                                .build();
-                        em.persist(newList); // JPA가 관리하는 상태로 저장
-                        return newList;
-                    });
+        // ✅ 3. 단어장 조회 or 생성
+        VocabularyList vocaList = vocabularyListRepository.findByUsers(user)
+                .orElseGet(() -> {
+                    VocabularyList newList = VocabularyList.builder()
+                            .users(user)
+                            .build();
+                    em.persist(newList);
+                    return newList;
+                });
 
-            // ✅ 4. 중복 검사
-            if (vocabularyListWordRepository.existsByVocabularyListAndWord(vocaList, word)) {
-                throw new CustomException(ErrorMessage.WORD_ALREADY_IN_VOCABULARY);
-            }
+        // ✅ 4. 중복 검사
+        if (vocabularyListWordRepository.existsByVocabularyListAndWord(vocaList, word)) {
+            throw new CustomException(ErrorMessage.WORD_ALREADY_IN_VOCABULARY);
+        }
 
-            // ✅ 5. 단어장-단어 연결 저장
-            VocabularyListWord link = VocabularyListWord.builder()
-                    .vocabularyList(vocaList)
-                    .word(word)
-                    .build();
-            vocabularyListWordRepository.save(link);
+        // ✅ 5. 단어장-단어 연결 저장
+        VocabularyListWord link = VocabularyListWord.builder()
+                .vocabularyList(vocaList)
+                .word(word)
+                .build();
+        vocabularyListWordRepository.save(link);
 
-            // ✅ 6. 의미/품사/예문 조회 및 응답 생성
-            List<Meaning> meanings = meaningRepository.findAllByWord(word);
+        // ✅ 6. 의미/품사/예문 조회 및 응답 생성
+        List<Meaning> meanings = meaningRepository.findAllByWord(word);
 
-            WordResponseDto responseDto = WordResponseDto.from(
-                    user.getId(),
-                    word.getWord(),
-                    meanings,
-                    mpsRepository,
-                    exampleSentenceRepository
-            );
+        WordResponseDto responseDto = WordResponseDto.from(
+                user.getId(),
+                word.getWord(),
+                meanings,
+                mpsRepository,
+                exampleSentenceRepository
+        );
 
-            return SuccessStatusResponse.of(SuccessMessage.WORD_ADDED_TO_VOCABULARY, responseDto);
+        return SuccessStatusResponse.of(SuccessMessage.WORD_ADDED_TO_VOCABULARY, responseDto);
     }
 }
