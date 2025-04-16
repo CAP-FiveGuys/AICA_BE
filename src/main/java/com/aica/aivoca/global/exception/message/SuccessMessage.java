@@ -20,7 +20,13 @@ public enum SuccessMessage {
     WORD_CACHED_SUCCESS(HttpStatus.CREATED.value(), "단어가 캐싱 테이블에 성공적으로 추가되었습니다."),
 
     // 단어장 추가
-    WORD_ADDED_TO_VOCABULARY(HttpStatus.OK.value(), "단어가 단어장에 성공적으로 추가되었습니다.");
+    WORD_ADDED_TO_VOCABULARY(HttpStatus.OK.value(), "단어가 단어장에 성공적으로 추가되었습니다."),
+
+    //로그인
+    LOGIN_SUCCESS(HttpStatus.OK.value(), "로그인에 성공하였습니다."),
+    TOKEN_REISSUE_SUCCESS(HttpStatus.CREATED.value(), "토큰이 재발행 되었습니다."),
+
+    ;
 
     private final int code;
     private final String message;
