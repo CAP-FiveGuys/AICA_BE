@@ -36,9 +36,9 @@ public class WordService {
     private EntityManager em;
 
     @Transactional
-    public SuccessStatusResponse<WordResponseDto> addWordToVocabulary(WordAddRequestDto requestDto) {
+    public SuccessStatusResponse<WordResponseDto> addWordToVocabulary(WordAddRequestDto requestDto, Long userId) {
         // ✅ 1. 유저 조회
-        Users user = usersRepository.findById(requestDto.userId())
+        Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
 
         // ✅ 2. 단어 조회
@@ -51,7 +51,7 @@ public class WordService {
                     VocabularyList newList = VocabularyList.builder()
                             .users(user)
                             .build();
-                    em.persist(newList); // JPA가 관리하는 상태로 저장
+                    em.persist(newList);
                     return newList;
                 });
 
