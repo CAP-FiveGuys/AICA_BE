@@ -22,24 +22,8 @@ public enum ErrorMessage {
     SENTENCE_TEXT_REQUIRED(HttpStatus.BAD_REQUEST.value(), "문장 내용이 필요합니다."),
 
     // 서버 오류
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버에 알 수 없는 오류가 발생했습니다."),
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버에 알 수 없는 오류가 발생했습니다.");
 
-    //로그인 관련
-    USER_ID_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "사용자 아이디를 찾을 수 없습니다."),
-    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED.value(),"유효하지 않은 비밀번호입니다."),
-    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED.value(),"유효하지 않은 리프레시토큰입니다."),
-    REFRESH_TOKEN_NOT_MATCH(HttpStatus.UNAUTHORIZED.value(),"리프레시토큰이 일차하지 않습니다."),
-
-    // 단어 관련
-    WORD_ID_REQUIRED(HttpStatus.BAD_REQUEST.value(), "단어 ID가 필요합니다."),
-    WORD_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "해당 단어를 찾을 수 없습니다."),
-    WORD_ALREADY_IN_VOCABULARY(HttpStatus.CONFLICT.value(), "이미 단어장에 존재하는 단어입니다."),
-
-
-
-
-
-    ;
 
     private final int code;
     private final String message;
