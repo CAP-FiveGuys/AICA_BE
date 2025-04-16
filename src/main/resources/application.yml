@@ -19,6 +19,11 @@ spring:
       port: 6379
       timeout: 60000
 
+  jwt:
+    secret: ${JWT_SECRET_KEY}
+    access-expiration: ${JWT_ACCESS_EXPIRATION}
+    refresh-expiration: ${JWT_REFRESH_EXPIRATION}
+
 server:
   port: 8080
 
