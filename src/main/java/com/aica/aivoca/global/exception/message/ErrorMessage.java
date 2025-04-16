@@ -20,6 +20,7 @@ public enum ErrorMessage {
     USER_ID_REQUIRED(HttpStatus.BAD_REQUEST.value(), "사용자 ID가 필요합니다."),
     SENTENCE_ID_REQUIRED(HttpStatus.BAD_REQUEST.value(), "문장 ID가 필요합니다."),
     SENTENCE_TEXT_REQUIRED(HttpStatus.BAD_REQUEST.value(), "문장 내용이 필요합니다."),
+    SENTENCE_NOT_FOUND_BY_USER(HttpStatus.NOT_FOUND.value(), "해당 사용자의 저장된 문장이 없습니다."),
 
     // 서버 오류
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버에 알 수 없는 오류가 발생했습니다."),
