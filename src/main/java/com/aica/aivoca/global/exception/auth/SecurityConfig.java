@@ -1,7 +1,9 @@
 package com.aica.aivoca.global.exception.auth;
 
-import com.aica.aivoca.global.jwt.JwtTokenProvider;
+import com.aica.aivoca.global.jwt.JwtAccessDeniedHandler;
+import com.aica.aivoca.global.jwt.JwtAuthenticationEntryPoint;
 import com.aica.aivoca.global.jwt.JwtAuthenticationFilter;
+import com.aica.aivoca.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +22,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAccessDeniedHandler accessDeniedHandler;
 
     private static final String[] AUTH_WHITE_LIST = {
-            "/api/auth/**", // 회원가입, 토큰 재발급
-            "/swagger-ui/**", "/v3/api-docs/**", // Swagger
+            "/api/auth/**",
+            "/swagger-ui/**", "/v3/api-docs/**",
             "/api/login", "/api/reissue",
     };
 
@@ -32,6 +36,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                )
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(AUTH_WHITE_LIST).permitAll();
                     auth.anyRequest().authenticated();
