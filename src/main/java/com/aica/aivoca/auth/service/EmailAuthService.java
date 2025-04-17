@@ -55,14 +55,14 @@ public class EmailAuthService {
             helper.setSubject("AICA 이메일 인증코드");
 
             Context context = new Context();
-            context.setVariable("code", code); // 이미지 변수는 더 이상 필요 없음
+            context.setVariable("code", code);
 
             String html = emailTemplateEngine.process("email/verification", context);
             helper.setText(html, true);
 
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
-            throw new IllegalStateException("이메일 전송 중 오류가 발생했습니다.", e);
+            throw new BusinessException(ErrorMessage.EMAIL_SEND_ERROR);
         }
     }
 }
