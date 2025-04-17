@@ -21,7 +21,7 @@ public record WordResponseDto(
         List<MeaningResponseDto> meaningDtos = meanings.stream()
                 .map(meaning -> {
                     List<String> partList = mpsRepository.findAllByMeaning(meaning).stream()
-                            .map(mps -> mps.getPartOfSpeech().getName())
+                            .map(mps -> mps.getPartOfSpeech().getPart())
                             .toList();
 
                     List<ExampleResponseDto> exampleDtos = exampleSentenceRepository.findAllByMeaning(meaning).stream()
