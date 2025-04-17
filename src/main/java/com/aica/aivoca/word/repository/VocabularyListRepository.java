@@ -13,4 +13,6 @@ public interface VocabularyListRepository extends JpaRepository<VocabularyList, 
 
     // 유저의 단어장 조회
     Optional<VocabularyList> findByUsers(Users user);
+
+    Optional<VocabularyList> findByUsers_Id(Long userId);
 }

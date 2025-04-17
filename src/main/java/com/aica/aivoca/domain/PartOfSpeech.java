@@ -1,27 +1,22 @@
 package com.aica.aivoca.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import lombok.Getter;
 
-@Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "part_of_speech")
+@Entity
 public class PartOfSpeech {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "part_id")
-    private Long partId;
+    private Long id;
 
-    @Column(name = "part", nullable = false, length = 10)
-    private String part;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    @Builder
-    public PartOfSpeech(Long partId, String part) {
-        this.partId = partId;
-        this.part = part;
+    protected PartOfSpeech() {}
+
+    public PartOfSpeech(String name) {
+        this.name = name;
     }
 }
