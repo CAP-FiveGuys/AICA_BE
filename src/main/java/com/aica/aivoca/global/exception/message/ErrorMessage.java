@@ -37,6 +37,7 @@ public enum ErrorMessage {
     WORD_ALREADY_IN_VOCABULARY(HttpStatus.CONFLICT.value(), "이미 단어장에 존재하는 단어입니다."),
     VOCABULARY_LIST_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "해당 사용자의 단어장이 존재하지 않습니다."),
 
+    EMAIL_SEND_ERROR(HttpStatus.NOT_FOUND.value(), "이메일 전송 중 오류가 발생했습니다."),
 
 
     ;
