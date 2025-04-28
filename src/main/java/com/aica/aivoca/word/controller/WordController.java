@@ -20,7 +20,7 @@ public class WordController {
 
     private final WordService wordService;
 
-    // ✅ 단어장에 단어 추가
+    // 단어장에 단어 추가
     @PostMapping("/word/add")
     public ResponseEntity<SuccessStatusResponse<WordResponseDto>> addWordToVocabulary(
             @RequestBody WordAddRequestDto requestDto,
@@ -31,13 +31,24 @@ public class WordController {
         );
     }
 
-    // ✅ 단어장 전체 단어 조회
+    // 단어장 전체 단어 조회
     @GetMapping("/word")
     public ResponseEntity<SuccessStatusResponse<List<WordGetResponseDto>>> getMyVocabularyWords(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
         return ResponseEntity.ok(
                 wordService.getMyVocabularyWords(userDetails.userId())
+        );
+    }
+
+    // 단어장 단어 삭제
+    @DeleteMapping("/word")
+    public ResponseEntity<SuccessStatusResponse<Void>> deleteWordFromVocabulary(
+            @RequestParam Long wordId,
+            @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        return ResponseEntity.ok(
+                wordService.deleteWordFromVocabulary(wordId, userDetails.userId())
         );
     }
 }
