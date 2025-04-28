@@ -1,13 +1,14 @@
 package com.aica.aivoca.sentence.repository;
 
 import com.aica.aivoca.domain.Sentence;
+import com.aica.aivoca.domain.SentenceId;
 import com.aica.aivoca.domain.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
 import java.util.List;
 
-public interface SentenceRepository extends JpaRepository<Sentence, Long> {
+public interface SentenceRepository extends JpaRepository<Sentence, SentenceId> {
 
 
     boolean existsByIdAndUser(Long id, Users user);
