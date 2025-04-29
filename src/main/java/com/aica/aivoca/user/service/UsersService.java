@@ -20,6 +20,6 @@ public class UsersService {
         Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_ID_NOT_FOUND));
 
-        return new UsersInfoResponse(user.getId(), user.getEmail(), user.getUserNickname());
+        return new UsersInfoResponse(user.getId(), user.getUserId(), user.getEmail(), user.getUserNickname());
     }
 }
