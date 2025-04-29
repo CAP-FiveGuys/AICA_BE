@@ -96,8 +96,8 @@ public class WordService {
 
                                 List<ExampleSentenceDto> examples = exampleSentenceRepository.findAllByMeaning(meaning).stream()
                                         .map(ex -> new ExampleSentenceDto(
-                                                ex.getExamSentence(),  // ✅ 수정: examSentence
-                                                ex.getExamMeaning()    // ✅ 수정: examMeaning
+                                                ex.getExamSentence(),
+                                                ex.getExamMeaning()
                                         ))
                                         .toList();
 
@@ -114,5 +114,20 @@ public class WordService {
                 .toList();
 
         return SuccessStatusResponse.of(SuccessMessage.GET_WORD_SUCCESS, result);
+    }
+
+    // ✅ 단어장 단어 삭제
+    @Transactional
+    public SuccessStatusResponse<Void> deleteWordFromVocabulary(Long wordId, Long userId) {
+        VocabularyList vocaList = vocabularyListRepository.findByUsers_Id(userId)
+                .orElseThrow(() -> new CustomException(ErrorMessage.VOCABULARY_LIST_NOT_FOUND));
+
+        VocabularyListWord vocabWord = vocabularyListWordRepository.findByVocabularyList_UserIdAndWord_Id(
+                        vocaList.getUserId(), wordId)
+                .orElseThrow(() -> new CustomException(ErrorMessage.WORD_NOT_FOUND_IN_VOCABULARY));
+
+        vocabularyListWordRepository.delete(vocabWord);
+
+        return SuccessStatusResponse.of(SuccessMessage.WORD_DELETED_FROM_VOCABULARY);
     }
 }
