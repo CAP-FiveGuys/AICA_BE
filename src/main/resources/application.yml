@@ -24,7 +24,13 @@ spring:
     access-expiration: ${JWT_ACCESS_EXPIRATION}
     refresh-expiration: ${JWT_REFRESH_EXPIRATION}
 
+
+openai:
+  api-key: ${OPENAI_API_KEY}
+
 server:
   port: 8080
+
+
 
 spring.config.import: optional:dotenv:.env, optional:application-prod.yml
