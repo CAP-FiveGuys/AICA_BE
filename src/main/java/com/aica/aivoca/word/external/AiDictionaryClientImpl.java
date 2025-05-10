@@ -7,6 +7,7 @@ import com.aica.aivoca.word.external.dto.*;
 import com.aica.aivoca.word.external.dto.OpenAiRequest.ChatMessage;
 import com.aica.aivoca.word.external.dto.OpenAiRequest.ChatMessage.Role;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -29,17 +30,20 @@ public class AiDictionaryClientImpl implements AiDictionaryClient {
         String prompt = """
                 단어: %s
                 
-                아래 JSON 형식에 맞춰 응답해줘. 대표적인 뜻 몇 개만 제공해도 괜찮아.
-                반드시 모든 'meaning'은 **한국어로 번역된 뜻**이어야 해.
-                각 뜻에는 해당되는 모든 품사(partsOfSpeech)를 배열로 포함시켜줘.
-                그리고 각 뜻에 대해 그 뜻이 포함된 예문(exampleSentences)을 최소 하나씩 제공해줘.
+                아래 조건에 따라 응답해줘:
                 
-                JSON 형식 예시:
+                1. 입력된 단어가 **실제로 존재하는 단어**라면:
+                - 대표적인 뜻 몇 개만 제공해도 괜찮아.
+                - 반드시 모든 'meaning'은 **한국어로 번역된 뜻**이어야 해.
+                - 각 뜻에는 해당되는 모든 품사(partsOfSpeech)를 배열로 포함시켜줘.
+                - 그리고 각 뜻에 대해 그 뜻이 포함된 예문(exampleSentences)을 각각 하나씩 제공해줘.
+                
+                이 경우 응답은 아래 JSON 형식을 따라줘:
                 {
                   "meanings": [
                     {
                       "meaning": "뜻",
-                      "partsOfSpeech": ["명사", "동사", 등],
+                      "partsOfSpeech": ["명사", "동사", ...],
                       "exampleSentences": [
                         {
                           "sentence": "영어 예문",
@@ -48,6 +52,13 @@ public class AiDictionaryClientImpl implements AiDictionaryClient {
                       ]
                     }
                   ]
+                }
+                
+                2. 입력된 단어가 **존재하지 않는 이상한 단어**라면:
+                - 아래 형식처럼 단순히 에러 메시지만 응답해줘:
+                
+                {
+                  "error": "이 단어는 사전에 등록되지 않은 단어입니다."
                 }
                 """.formatted(word);
 
@@ -72,13 +83,22 @@ public class AiDictionaryClientImpl implements AiDictionaryClient {
             }
             //AI가 생성한 JSON텍스트를 꺼내는 부분
             String content = response.getFirstMessageContent();
-            return objectMapper.readValue(content, AiWordResponse.class);
+            System.out.println("GPT 응답 원문: " + content);
+            // 사전 등록되지 않은 단어일 경우 커스텀 예외 발생
+            JsonNode root = objectMapper.readTree(content);
+            if (root.has("error")) {
+                // 여기로 떨어져야 정상!
+                throw new CustomException(ErrorMessage.WORD_NOT_FOUND_IN_DICTIONARY);
+            }
+            return objectMapper.treeToValue(root, AiWordResponse.class);
 
-        } catch (HttpClientErrorException e) {//HTTP 요청 자체에서 에러 발생 (ex: 401 Unauthorized, 400 Bad Request 등) 시 처리
+        } catch (HttpClientErrorException e) {
             throw new CustomException(ErrorMessage.OPENAI_REQUEST_FAILED);
-        } catch (JsonProcessingException e) {//JSON 문자열 → 객체 변환 실패 시 처리 (예: 형식 불일치, 누락 등)
+        } catch (JsonProcessingException e) {
             throw new CustomException(ErrorMessage.OPENAI_RESPONSE_PARSE_FAILED);
-        } catch (Exception e) {//위 두 케이스 외의 예상하지 못한 모든 오류를 처리 (예: DB 문제, NullPointer 등)
+        } catch (CustomException e) {
+            throw e; // 이미 발생시킨 커스텀 예외는 그대로 다시 던짐
+        } catch (Exception e) {
             throw new CustomException(ErrorMessage.WORD_LOOKUP_FAILED);
         }
     }

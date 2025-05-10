@@ -46,8 +46,11 @@ public class PublicWordService {
 
     @Transactional
     public SuccessStatusResponse<WordGetResponseDto> lookupAndSaveWordIfNeeded(String wordText) {
-        if (wordText == null || wordText.trim().isEmpty()) {
+        if (wordText == null || wordText.trim().isEmpty() || wordText.equals("\"\"")) {
             throw new CustomException(ErrorMessage.WORD_TEXT_REQUIRED);
+        }
+        if (!wordText.matches("^[a-zA-Z]+$")) {
+            throw new CustomException(ErrorMessage.INVALID_WORD_INPUT);
         }
 
         boolean isNew = false;
@@ -71,6 +74,9 @@ public class PublicWordService {
                 }
 
                 for (AiExample example : aiMeaning.exampleSentences()) {
+                    if (example.sentence().isBlank() || example.meaning().isBlank()) {
+                        throw new CustomException(ErrorMessage.INVALID_AI_RESPONSE);
+                    }
                     exampleSentenceRepository.save(new ExampleSentence(null, meaning,
                             example.sentence(), example.meaning()));
                 }
