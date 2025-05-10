@@ -42,6 +42,15 @@ public enum ErrorMessage {
 
     EMAIL_SEND_ERROR(HttpStatus.NOT_FOUND.value(), "이메일 전송 중 오류가 발생했습니다."),
 
+    // 단어 의미 조회 실패 관련
+    WORD_LOOKUP_FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "단어 의미를 불러오는 중 문제가 발생했습니다."),
+    WORD_TEXT_REQUIRED(HttpStatus.BAD_REQUEST.value(), "단어 입력이 필요합니다."),
+    INVALID_AI_RESPONSE(HttpStatus.BAD_REQUEST.value(), "AI가 반환한 데이터에 누락된 정보가 있습니다."),
+    OPENAI_REQUEST_FAILED(HttpStatus.BAD_GATEWAY.value(), "OpenAI에게 단어 정보를 요청하는 데 실패했습니다."),
+    INVALID_WORD_INPUT(HttpStatus.BAD_REQUEST.value(), "유효한 영어 단어를 입력해 주세요."),
+    WORD_NOT_FOUND_IN_DICTIONARY(HttpStatus.BAD_REQUEST.value(), "입력한 단어는 사전에 존재하지 않습니다."),
+    OPENAI_RESPONSE_PARSE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "OpenAI 응답을 처리하는 데 실패했습니다."),
+    OPENAI_RESPONSE_EMPTY(HttpStatus.BAD_REQUEST.value(), "OpenAI가 단어 정보를 포함하지 않은 응답을 보냈습니다."),
 
     ;
 
