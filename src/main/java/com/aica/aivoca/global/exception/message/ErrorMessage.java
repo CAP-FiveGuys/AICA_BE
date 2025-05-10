@@ -44,6 +44,7 @@ public enum ErrorMessage {
 
     // 단어 의미 조회 실패 관련
     WORD_LOOKUP_FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "단어 의미를 불러오는 중 문제가 발생했습니다."),
+    WORD_TEXT_REQUIRED(HttpStatus.BAD_REQUEST.value(), "단어 입력이 필요합니다."),
     OPENAI_REQUEST_FAILED(HttpStatus.BAD_GATEWAY.value(), "OpenAI에게 단어 정보를 요청하는 데 실패했습니다."),
     OPENAI_RESPONSE_PARSE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "OpenAI 응답을 처리하는 데 실패했습니다."),
     OPENAI_RESPONSE_EMPTY(HttpStatus.BAD_REQUEST.value(), "OpenAI가 단어 정보를 포함하지 않은 응답을 보냈습니다."),

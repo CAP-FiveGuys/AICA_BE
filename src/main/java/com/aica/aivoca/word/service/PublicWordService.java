@@ -1,7 +1,9 @@
 package com.aica.aivoca.word.service;
 
 import com.aica.aivoca.domain.*;
+import com.aica.aivoca.global.exception.CustomException;
 import com.aica.aivoca.global.exception.dto.SuccessStatusResponse;
+import com.aica.aivoca.global.exception.message.ErrorMessage;
 import com.aica.aivoca.global.exception.message.SuccessMessage;
 import com.aica.aivoca.word.dto.ExampleSentenceDto;
 import com.aica.aivoca.word.dto.MeaningDto;
@@ -44,6 +46,10 @@ public class PublicWordService {
 
     @Transactional
     public SuccessStatusResponse<WordGetResponseDto> lookupAndSaveWordIfNeeded(String wordText) {
+        if (wordText == null || wordText.trim().isEmpty()) {
+            throw new CustomException(ErrorMessage.WORD_TEXT_REQUIRED);
+        }
+
         boolean isNew = false;
         Word word = wordRepository.findByWordIgnoreCase(wordText).orElse(null);
 
