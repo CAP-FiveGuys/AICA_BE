@@ -24,7 +24,7 @@ public class SecurityConfig {
     private static final String[] AUTH_WHITE_LIST = {
             "/api/auth/**", // 회원가입, 토큰 재발급
             "/swagger-ui/**", "/v3/api-docs/**", // Swagger
-            "/api/login", "/api/reissue",
+            "/api/login", "/api/reissue","/api/voca/**"
     };
 
     @Bean
