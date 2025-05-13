@@ -24,6 +24,7 @@ public enum ErrorMessage {
     SENTENCE_NOT_FOUND(HttpStatus.NOT_FOUND.value(), "해당 문장을 찾을 수 없습니다."),
     FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN.value(), "해당 문장을 삭제할 권한이 없습니다."),
 
+
     // 서버 오류
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR.value(), "서버에 알 수 없는 오류가 발생했습니다."),
 
