@@ -25,6 +25,7 @@ public class SecurityConfig {
             "/api/auth/**", // 회원가입, 토큰 재발급
             "/swagger-ui/**", "/v3/api-docs/**", // Swagger
             "/api/login", "/api/reissue",
+            "/api/wordinfo"
     };
 
     @Bean
@@ -39,7 +40,6 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-
     }
 
     @Bean
