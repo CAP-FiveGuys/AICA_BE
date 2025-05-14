@@ -19,4 +19,6 @@ public interface SentenceRepository extends JpaRepository<Sentence, SentenceId> 
     // --- 복합 키 존재 여부 확인 메소드 추가 ---
     boolean existsByIdAndUserId(Long id, Long userId);
 
+    void deleteByUserId(Long userId);
+
 }
