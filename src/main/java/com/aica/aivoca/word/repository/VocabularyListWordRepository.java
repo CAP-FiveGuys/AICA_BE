@@ -19,4 +19,6 @@ public interface VocabularyListWordRepository extends JpaRepository<VocabularyLi
 
     // ✅ 단어장 ID와 단어 ID로 단어 조회 (새로 추가)
     Optional<VocabularyListWord> findByVocabularyList_UserIdAndWord_Id(Long vocabularyListUserId, Long wordId);
+
+    void deleteByVocabularyList_UserId(Long userId);
 }
