@@ -1,10 +1,7 @@
 package com.aica.aivoca.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
@@ -20,12 +17,14 @@ public class Users {
     @Column(name = "user_uid", nullable = false, unique = true, length = 50)
     private String userId; // 사용자가 입력하는 유저 아이디
 
+    @Setter
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
     @Column(name = "user_nickname", nullable = false, length = 100)
     private String userNickname;
 
+    @Setter
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
