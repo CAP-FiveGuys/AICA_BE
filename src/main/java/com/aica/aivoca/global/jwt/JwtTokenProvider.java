@@ -8,27 +8,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
+import javax.crypto.SecretKey;
+import java.util.Base64;
 import java.util.Date;
 
-/**
- * JWT 토큰을 생성하고, 유효성 검증 및 Claims 정보를 추출하는 유틸리티 클래스
- */
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    // .env 에서 주입받는 값들
     @Value("${JWT_SECRET_KEY}")
     private String secretKey;
 
-    @Value("${JWT_ACCESS_EXPIRATION}")  // access 토큰 만료 시간 (ms)
+    @Value("${JWT_ACCESS_EXPIRATION}")
     private long accessTokenValidity;
 
-    @Value("${JWT_REFRESH_EXPIRATION}") // refresh 토큰 만료 시간 (ms)
+    @Value("${JWT_REFRESH_EXPIRATION}")
     private long refreshTokenValidity;
 
-    // 사용할 서명 알고리즘 (HMAC SHA-256)
     private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
     /**
@@ -45,7 +41,6 @@ public class JwtTokenProvider {
         return createToken(userId, userUid, refreshTokenValidity);
     }
 
-
     private String createToken(Long userId, String userUid, long validity) {
         Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
         claims.put("user_uid", userUid);
@@ -58,10 +53,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
-                .signWith(
-                        Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)),
-                        SIGNATURE_ALGORITHM
-                )
+                .signWith(getSigningKey(), SIGNATURE_ALGORITHM)
                 .compact();
     }
 
@@ -69,7 +61,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
+                    .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token);
             return true;
@@ -81,11 +73,14 @@ public class JwtTokenProvider {
     //토큰 받기
     public Claims getClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(secretKey.getBytes(StandardCharsets.UTF_8))
+                .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
 
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = Base64.getDecoder().decode(secretKey);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 }
-
