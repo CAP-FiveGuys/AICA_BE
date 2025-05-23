@@ -15,4 +15,7 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
 
     // 이메일 중복 체크
     boolean existsByEmail(String email);
+
+    // Long 타입의 id로 유저 존재 여부 확인
+    boolean existsById(Long id);
 }

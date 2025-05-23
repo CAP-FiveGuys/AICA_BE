@@ -53,6 +53,15 @@ public enum ErrorMessage {
     OPENAI_RESPONSE_PARSE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR.value(), "OpenAI 응답을 처리하는 데 실패했습니다."),
     OPENAI_RESPONSE_EMPTY(HttpStatus.BAD_REQUEST.value(), "OpenAI가 단어 정보를 포함하지 않은 응답을 보냈습니다."),
 
+    // 회원 정보 수정 관련
+    CURRENT_PASSWORD_MISMATCH(HttpStatus.FORBIDDEN.value(), "현재 비밀번호가 일치하지 않습니다."),
+    NEW_PASSWORD_CONFIRMATION_MISMATCH(HttpStatus.FORBIDDEN.value(), "새로운 비밀번호 확인이 일치하지 않습니다."),
+    NO_UPDATE_DATA_PROVIDED(HttpStatus.BAD_REQUEST.value(), "수정할 정보를 입력해주세요."), // 수정할 정보가 없는 경우
+    PASSWORD_EMAIL_SIMULTANEOUS_CHANGE_NOT_ALLOWED(HttpStatus.BAD_REQUEST.value(), "비밀번호와 이메일은 동시에 변경할 수 없습니다."), // 동시 변경 불가
+    PASSWORD_CHANGE_REQUIRED_FIELDS_MISSING(HttpStatus.BAD_REQUEST.value(), "비밀번호 변경 시 현재 비밀번호, 새 비밀번호, 새 비밀번호 확인을 모두 입력해주세요."), // 비밀번호 필수 필드 누락
+    NEW_PASSWORD_SAME_AS_CURRENT(HttpStatus.BAD_REQUEST.value(), "새 비밀번호는 현재 비밀번호와 달라야 합니다."), // 새 비밀번호가 현재와 동일
+    NEW_EMAIL_REQUIRED(HttpStatus.BAD_REQUEST.value(), "새로운 이메일을 입력해주세요."), // 새 이메일 누락
+    PASSWORD_MIN_LENGTH_VIOLATION(HttpStatus.BAD_REQUEST.value(), "비밀번호는 최소 8자 이상이어야 합니다."), // DTO @Size와 연동 가능
     ;
 
 
