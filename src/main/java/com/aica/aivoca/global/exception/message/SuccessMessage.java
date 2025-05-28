@@ -28,6 +28,9 @@ public enum SuccessMessage {
     LOGIN_SUCCESS(HttpStatus.OK.value(), "로그인에 성공하였습니다."),
     TOKEN_REISSUE_SUCCESS(HttpStatus.CREATED.value(), "토큰이 재발행 되었습니다."),
 
+    //회원 관련
+    USER_DELETE_SUCCESS(HttpStatus.OK.value(), "회원 삭제에 성공하였습니다."),
+
     ;
 
 
