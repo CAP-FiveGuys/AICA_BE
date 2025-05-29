@@ -51,7 +51,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             if (!jwtTokenProvider.validateToken(token)) {
-                throw new IllegalArgumentException("리프레시토큰이 일차하지 않습니다.");
+                throw new IllegalArgumentException("액세스토큰이 유효하지 않습니다.");
             }
 
             Claims claims = jwtTokenProvider.getClaims(token);
