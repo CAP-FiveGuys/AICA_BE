@@ -13,21 +13,36 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 생성자 주입을 통해 JwtTokenProvider 주입
     public JwtAuthenticationFilter(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    // 필터를 건너뛸 URI 목록 (토큰 없이 접근 허용)
+    private static final List<String> WHITELIST = List.of(
+            "/api/auth",
+            "/api/login",
+            "/api/reissue",
+            "/api/voca",
+            "/api/wordinfo",
+            "/api/sentence"
+    );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getRequestURI();
+
+        // 화이트리스트 경로는 필터 로직 건너뜀
+        if (WHITELIST.stream().anyMatch(path::startsWith)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = resolveToken(request);
 
         try {
@@ -53,12 +68,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (IllegalArgumentException e) {
-            response.setStatus(HttpServletResponse.SC_CONFLICT); // 409(401이 조금 더 적절하지만 로그아웃서비스와의 응답 코드를 맞추기위해 409로함.)
+            response.setStatus(HttpServletResponse.SC_CONFLICT); // or 401 if preferred
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write("{\"code\": 409, \"message\": \"" + e.getMessage() + "\"}");
         }
     }
-
 
     private String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
