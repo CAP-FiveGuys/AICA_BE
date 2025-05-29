@@ -68,9 +68,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (IllegalArgumentException e) {
-            response.setStatus(HttpServletResponse.SC_CONFLICT); // or 401 if preferred
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // or 401 if preferred
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write("{\"code\": 409, \"message\": \"" + e.getMessage() + "\"}");
+            response.getWriter().write("{\"code\": 401, \"message\": \"" + e.getMessage() + "\"}");
         }
     }
 
