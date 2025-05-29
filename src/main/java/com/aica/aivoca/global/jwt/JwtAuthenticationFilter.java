@@ -28,12 +28,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        // 요청에서 Authorization 헤더에 있는 토큰 추출
         String token = resolveToken(request);
 
-        if (token != null && jwtTokenProvider.validateToken(token)) {
-            Claims claims = jwtTokenProvider.getClaims(token);
+        try {
+            if (token == null) {
+                throw new IllegalArgumentException("Authorization 헤더가 없습니다.");
+            }
 
+            if (!jwtTokenProvider.validateToken(token)) {
+                throw new IllegalArgumentException("리프레시토큰이 일차하지 않습니다.");
+            }
+
+            Claims claims = jwtTokenProvider.getClaims(token);
             Long userId = Long.parseLong(claims.getSubject());
             String userUid = (String) claims.get("user_uid");
 
@@ -42,11 +48,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     null,
                     List.of()
             );
-
             SecurityContextHolder.getContext().setAuthentication(auth);
-        }
 
-        filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
+
+        } catch (IllegalArgumentException e) {
+            response.setStatus(HttpServletResponse.SC_CONFLICT); // 409(401이 조금 더 적절하지만 로그아웃서비스와의 응답 코드를 맞추기위해 409로함.)
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("{\"code\": 409, \"message\": \"" + e.getMessage() + "\"}");
+        }
     }
 
 
