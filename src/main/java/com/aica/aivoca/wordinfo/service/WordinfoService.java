@@ -77,7 +77,7 @@ public class WordinfoService {
                     if (example.sentence().isBlank() || example.meaning().isBlank()) {
                         throw new CustomException(ErrorMessage.INVALID_AI_RESPONSE);
                     }
-                    exampleSentenceRepository.save(new ExampleSentence(null, meaning,
+                    exampleSentenceRepository.save(new com.aica.aivoca.domain.ExampleSentence(null, meaning,
                             example.sentence(), example.meaning()));
                 }
             }

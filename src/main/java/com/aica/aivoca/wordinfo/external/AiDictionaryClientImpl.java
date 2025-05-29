@@ -34,6 +34,8 @@ public class AiDictionaryClientImpl implements AiDictionaryClient {
                 
                 아래 조건에 따라 응답해줘:
                 
+                ⚠️ 반드시 **네이버 영어사전**의 정보를 참고해서만 응답하고, 스스로 내용을 **생성하지 마**.
+                
                 1. 입력된 단어가 **실제로 존재하는 단어**라면:
                 - 대표적인 뜻 몇 개만 제공해도 괜찮아.
                 - 반드시 모든 'meaning'은 **한국어로 번역된 뜻**이어야 해.
