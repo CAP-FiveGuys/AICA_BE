@@ -2,6 +2,7 @@ package com.aica.aivoca.user.controller;
 
 import com.aica.aivoca.global.exception.dto.SuccessStatusResponse;
 import com.aica.aivoca.global.exception.message.SuccessMessage;
+import com.aica.aivoca.user.dto.PasswordVerificationRequestDto;
 import com.aica.aivoca.user.dto.UserUpdateRequestDto;
 import com.aica.aivoca.user.dto.UsersInfoResponse;
 import com.aica.aivoca.user.service.UsersService;
@@ -34,16 +35,19 @@ public class UsersController {
         return ResponseEntity.ok(SuccessStatusResponse.of(SuccessMessage.USER_DELETE_SUCCESS));
     }
 
+    @PostMapping("/member/verify-password")
+    public ResponseEntity<SuccessStatusResponse<Void>> verifyPassword(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @RequestBody @Valid PasswordVerificationRequestDto requestDto) {
+        userService.verifyCurrentPassword(userDetails.userId(), requestDto);
+        return ResponseEntity.ok(SuccessStatusResponse.of(SuccessMessage.PASSWORD_VERIFICATION_SUCCESS));
+    }
+
     @PatchMapping("/member")
     public ResponseEntity<SuccessStatusResponse<Map<String, String>>> updateUserInfo(
-
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @RequestBody @Valid UserUpdateRequestDto requestDto) {
-
         Map<String, String> updatedInfo = userService.updateUser(userDetails.userId(), requestDto);
-
-        return ResponseEntity.ok(
-                SuccessStatusResponse.of(SuccessMessage.MEMBER_UPDATE_SUCCESS, updatedInfo)
-        );
+        return ResponseEntity.ok(SuccessStatusResponse.of(SuccessMessage.MEMBER_UPDATE_SUCCESS, updatedInfo));
     }
 }
