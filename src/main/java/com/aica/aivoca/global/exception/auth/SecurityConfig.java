@@ -22,10 +22,10 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final String[] AUTH_WHITE_LIST = {
-            "/api/auth/**", // 회원가입, 토큰 재발급
-            "/swagger-ui/**", "/v3/api-docs/**", // Swagger
+            "/api/auth/**",
             "/api/login", "/api/reissue","/api/voca/**",
-            "/api/wordinfo"
+            "/api/wordinfo",
+            "/hc","/env",
     };
 
     @Bean
