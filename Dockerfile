@@ -1,4 +1,4 @@
-FROM amazoncorretto:11-alpine-jdk
+FROM amazoncorretto:21-alpine-jdk
 
 ARG PROFILES
 ARG ENV
