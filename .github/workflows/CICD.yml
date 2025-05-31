@@ -19,16 +19,10 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-          
-      - name: make application.yml
-        run: |
-          mkdir -p ./src/main/resources
-          cd ./src/main/resources
-          touch ./application-secret.yml
-          echo "${{ secrets.SECRET }}" > ./application-secret.yml
 
       - name: Build with Gradle
         run: |
+          echo ${{secrets.APPLICATION_SECRET}} | base64 --decode > ./src/main/resources/application-secret.yml
           chmod +x ./gradlew
           ./gradlew clean build -x test
 
