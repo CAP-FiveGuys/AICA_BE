@@ -22,7 +22,7 @@ public class WordController {
 
     // 단어장에 단어 추가
     @PostMapping("/word/add")
-    public ResponseEntity<SuccessStatusResponse<WordResponseDto>> addWordToVocabulary(
+    public ResponseEntity<SuccessStatusResponse<List<WordResponseDto>>> addWordToVocabulary(
             @RequestBody WordAddRequestDto requestDto,
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
