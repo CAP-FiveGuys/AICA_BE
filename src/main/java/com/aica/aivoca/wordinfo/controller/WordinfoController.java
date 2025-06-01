@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/wordinfo")
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class WordinfoController {
     private final WordinfoService WordinfoService;
 
     @GetMapping
-    public ResponseEntity<SuccessStatusResponse<WordGetResponseDto>> lookupWord(@RequestParam String word) {
+    public ResponseEntity<SuccessStatusResponse<List<WordGetResponseDto>>> lookupWord(@RequestParam String word) {
         return ResponseEntity.ok(
                 WordinfoService.lookupAndSaveWordIfNeeded(word)
         );
