@@ -27,7 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/login",
             "/api/reissue",
             "/api/voca",
-            "/api/wordinfo",
             "/hc",
             "/env"
     );
