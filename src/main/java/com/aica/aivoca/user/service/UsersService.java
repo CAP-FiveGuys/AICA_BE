@@ -13,10 +13,13 @@ import com.aica.aivoca.user.repository.UsersRepository;
 import com.aica.aivoca.word.repository.VocabularyListRepository;
 import com.aica.aivoca.word.repository.VocabularyListWordRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.ReactiveRedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,7 +33,8 @@ public class UsersService {
     private final SentenceWordRepository sentenceWordRepository;
     private final VocabularyListWordRepository vocabularyListWordRepository;
     private final PasswordEncoder passwordEncoder;
-    private final EmailVerificationRepository emailVerificationRepository; // 👈 이 필드를 추가해야 합니다!
+    private final EmailVerificationRepository emailVerificationRepository;
+    private final RedisTemplate<String, String> redisTemplate;
 
     @Transactional(readOnly = true)
     public UsersInfoResponse getUserInfo(Long userId) {
@@ -69,13 +73,24 @@ public class UsersService {
     public void verifyCurrentPassword(Long userId, PasswordVerificationRequestDto requestDto) {
         Users user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
+
         if (!passwordEncoder.matches(requestDto.currentPassword(), user.getPassword())) {
             throw new BusinessException(ErrorMessage.CURRENT_PASSWORD_MISMATCH);
         }
+        redisTemplate.opsForValue().set("password_verified:" + userId, String.valueOf(true), Duration.ofMinutes(5));
     }
 
     @Transactional
     public Map<String, String> updateUser(Long id, UserUpdateRequestDto requestDto) {
+        // 인증 여부 체크
+        Boolean isVerified = Boolean.valueOf(redisTemplate.opsForValue().get("password_verified:" + id));
+        if (isVerified == null || !isVerified) {
+            throw new BusinessException(ErrorMessage.PASSWORD_VERIFICATION_REQUIRED);
+        }
+
+        // 1회 사용 후 인증 상태 삭제
+        redisTemplate.delete("password_verified:" + id);
+
         Users user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
 
