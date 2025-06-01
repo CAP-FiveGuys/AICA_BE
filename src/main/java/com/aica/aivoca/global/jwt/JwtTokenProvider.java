@@ -16,13 +16,13 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Value("${JWT_SECRET_KEY}")
+    @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${JWT_ACCESS_EXPIRATION}")
+    @Value("${jwt.access-expiration}")
     private long accessTokenValidity;
 
-    @Value("${JWT_REFRESH_EXPIRATION}")
+    @Value("${jwt.refresh-expiration}")
     private long refreshTokenValidity;
 
     private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;

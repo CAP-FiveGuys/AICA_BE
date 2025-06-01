@@ -1,16 +1,63 @@
-spring.config.import: optional:dotenv:.env, optional:application-prod.yml
+spring:
+  profiles:
+    active: local
+    group:
+      local: local, common, secret
+      blue: blue, common, secret
+      green: green, common, secret
 
-openai:
-  api:
-    key: ${OPENAI_API_KEY}
-    url: https://api.openai.com/v1/chat/completions
+server:
+  env: blue
+
+---
 
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  config:
+    activate:
+      on-profile: local
+
+server:
+  port: 8080
+  serverAddress: localhost
+
+serverName: local_server
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: blue
+
+server:
+  port: 8080
+  serverAddress: 3.38.30.238
+
+serverName: blue_server
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: green
+
+server:
+  port: 8081
+  serverAddress: 3.38.30.238
+
+serverName: green_server
+
+---
+
+
+
+
+spring:
+  config:
+    import: optional:dotenv:.env
+    activate:
+      on-profile: common
 
   jpa:
     hibernate:
@@ -19,19 +66,3 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      timeout: 60000
-
-  jwt:
-    secret: ${JWT_SECRET_KEY}
-    access-expiration: ${JWT_ACCESS_EXPIRATION}
-    refresh-expiration: ${JWT_REFRESH_EXPIRATION}
-
-
-
-server:
-  port: 8080
