@@ -34,9 +34,9 @@ public enum SuccessMessage {
     //회원 관련
     USER_DELETE_SUCCESS(HttpStatus.OK.value(), "회원 삭제에 성공하였습니다."),
 
-    // 회원 정보 업데이트 성공 메시지
+    // 회원 정보 수정 관련
     MEMBER_UPDATE_SUCCESS(HttpStatus.OK.value(), "회원 정보가 성공적으로 업데이트되었습니다."),
-
+    PASSWORD_VERIFICATION_SUCCESS(HttpStatus.OK.value(), "현재 비밀번호 인증이 성공했습니다."),
 
     ;
 
