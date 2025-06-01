@@ -73,7 +73,7 @@ public class AiDictionaryClientImpl implements AiDictionaryClient {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(openAiProperties.getKey());
+        headers.setBearerAuth(openAiProperties.getApiKey());
 
         HttpEntity<OpenAiRequest> entity = new HttpEntity<>(request, headers);
 
@@ -103,7 +103,9 @@ public class AiDictionaryClientImpl implements AiDictionaryClient {
         } catch (CustomException e) {
             throw e; // 이미 발생시킨 커스텀 예외는 그대로 다시 던짐
         } catch (Exception e) {
+            e.printStackTrace(); // 로그로 원인 확인
             throw new CustomException(ErrorMessage.WORD_LOOKUP_FAILED);
         }
+
     }
 }
