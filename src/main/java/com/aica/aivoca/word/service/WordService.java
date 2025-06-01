@@ -36,7 +36,7 @@ public class WordService {
 
     // ✅ 단어장에 단어 추가
     @Transactional
-    public SuccessStatusResponse<WordResponseDto> addWordToVocabulary(WordAddRequestDto requestDto, Long userId) {
+    public SuccessStatusResponse<List<WordResponseDto>> addWordToVocabulary(WordAddRequestDto requestDto, Long userId) {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorMessage.USER_NOT_FOUND));
 
@@ -72,8 +72,12 @@ public class WordService {
                 exampleSentenceRepository
         );
 
-        return SuccessStatusResponse.of(SuccessMessage.WORD_ADDED_TO_VOCABULARY, responseDto);
+        return SuccessStatusResponse.<List<WordResponseDto>>of(
+                SuccessMessage.WORD_ADDED_TO_VOCABULARY,
+                List.of(responseDto)
+        );
     }
+
 
     // ✅ 단어장 전체 단어 조회
     @Transactional(readOnly = true)

@@ -45,7 +45,7 @@ public class WordinfoService {
     );
 
     @Transactional
-    public SuccessStatusResponse<WordGetResponseDto> lookupAndSaveWordIfNeeded(String wordText) {
+    public SuccessStatusResponse<List<WordGetResponseDto>> lookupAndSaveWordIfNeeded(String wordText) {
         if (wordText == null || wordText.trim().isEmpty() || wordText.equals("\"\"")) {
             throw new CustomException(ErrorMessage.WORD_TEXT_REQUIRED);
         }
@@ -101,6 +101,7 @@ public class WordinfoService {
                 ? SuccessMessage.WORD_SAVED_FROM_AI
                 : SuccessMessage.WORD_FOUND_IN_DB;
 
-        return SuccessStatusResponse.of(message, responseDto);
+        // ⬇ 변경된 부분: List로 감싸고 제네릭 명시
+        return SuccessStatusResponse.<List<WordGetResponseDto>>of(message, List.of(responseDto));
     }
 }
