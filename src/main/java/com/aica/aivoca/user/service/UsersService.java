@@ -88,8 +88,7 @@ public class UsersService {
             throw new BusinessException(ErrorMessage.PASSWORD_VERIFICATION_REQUIRED);
         }
 
-        // 1회 사용 후 인증 상태 삭제
-        redisTemplate.delete("password_verified:" + id);
+
 
         Users user = userRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorMessage.USER_NOT_FOUND));
@@ -115,8 +114,8 @@ public class UsersService {
         if (isNicknameUpdate) {
             updateNickname(user, requestDto, updatedInfo);
         }
-
         userRepository.save(user);
+        redisTemplate.delete("password_verified:" + id);  // 1회 사용 후 인증 상태 삭제
         return updatedInfo;
     }
 
