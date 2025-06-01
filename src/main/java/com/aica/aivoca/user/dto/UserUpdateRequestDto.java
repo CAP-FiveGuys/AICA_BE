@@ -1,16 +1,17 @@
 package com.aica.aivoca.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
-@JsonInclude(JsonInclude.Include.NON_NULL) // NULL 값 필드는 응답에 포함하지 않음
 public record UserUpdateRequestDto(
-        String currentPassword, // 현재 비밀번호 (비밀번호 변경 시 필수)
         @Size(min = 8, message = "새 비밀번호는 최소 8자 이상이어야 합니다.")
-        String newPassword,     // 새로운 비밀번호 (비밀번호 변경 시 필수)
-        String confirmNewPassword, // 새로운 비밀번호 확인 (비밀번호 변경 시 필수)
+        String newPassword, // null이면 변경 안 함, ""이면 @Size에 걸림
 
-        @Email(message = "올바른 이메일 형식이 아닙니다.")
-        String newEmail         // 새로운 이메일 (이메일 변경 시 필수)
+        String confirmNewPassword, // newPassword가 null이면 변경 안 함, ""이면 @Size에 걸림
+
+        @Email(message = "유효한 이메일 형식이 아닙니다.")
+        String newEmail, // null이면 변경 안 함, "" 또는 유효하지 않은 형식이면 @Email에 걸림
+
+        @Size(min = 1)
+        String newNickname // null이면 변경 안 함, ""이면 @Size에 걸림
 ) {}

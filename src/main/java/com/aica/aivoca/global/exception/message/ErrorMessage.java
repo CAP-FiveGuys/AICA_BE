@@ -62,7 +62,14 @@ public enum ErrorMessage {
     NEW_PASSWORD_SAME_AS_CURRENT(HttpStatus.BAD_REQUEST.value(), "새 비밀번호는 현재 비밀번호와 달라야 합니다."), // 새 비밀번호가 현재와 동일
     NEW_EMAIL_REQUIRED(HttpStatus.BAD_REQUEST.value(), "새로운 이메일을 입력해주세요."), // 새 이메일 누락
     PASSWORD_MIN_LENGTH_VIOLATION(HttpStatus.BAD_REQUEST.value(), "비밀번호는 최소 8자 이상이어야 합니다."), // DTO @Size와 연동 가능
+    NEW_NICKNAME_SAME_AS_CURRENT(HttpStatus.BAD_REQUEST.value(), "새 닉네임은 현재 닉네임과 동일할 수 없습니다."),
+    EMAIL_NOT_VERIFIED_FOR_CHANGE(HttpStatus.FORBIDDEN.value(), "새 이메일 인증이 완료되지 않았습니다. 이메일 인증을 먼저 완료해주세요."),
+    NEW_EMAIL_SAME_AS_CURRENT(HttpStatus.BAD_REQUEST.value(), "새 이메일은 현재 이메일과 동일할 수 없습니다."),
+    PASSWORD_VERIFICATION_REQUIRED(HttpStatus.FORBIDDEN.value(), "비밀번호 확인이 필요합니다. 먼저 비밀번호를 확인해주세요."),
+
+
     ;
+
 
 
     private final int code;
