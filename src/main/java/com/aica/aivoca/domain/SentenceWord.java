@@ -12,7 +12,6 @@ import lombok.Builder;
 @NoArgsConstructor
 public class SentenceWord {
 
-
     @Id
     @Column(name = "sentence_id")
     private Long sentenceId;

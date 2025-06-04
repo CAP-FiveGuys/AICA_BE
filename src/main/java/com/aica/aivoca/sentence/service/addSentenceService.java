@@ -21,7 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AddSentenceService {
+public class addSentenceService {
 
     private final SentenceRepository sentenceRepository;
     private final UsersRepository usersRepository;
