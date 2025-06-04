@@ -8,13 +8,11 @@ import java.util.List;
 
 public record WordResponseDto(
         Long userId,
-        Long sentenceId,
         String word,
         List<MeaningResponseDto> meanings
 ) {
     public static WordResponseDto from(
             Long userId,
-            Long sentenceId,
             String word,
             List<Meaning> meanings,
             MeaningPartOfSpeechRepository mpsRepository,
@@ -42,7 +40,7 @@ public record WordResponseDto(
                 })
                 .toList();
 
-        return new WordResponseDto(userId, sentenceId, word, meaningDtos);
+        return new WordResponseDto(userId, word, meaningDtos);
     }
 
     public record MeaningResponseDto(
