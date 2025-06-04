@@ -4,7 +4,7 @@ import java.util.List;
 
 public record WordGetResponseDto(
         Long wordId,
-        List<Long> sentenceIds,
+        Long sentenceId,
         String word,
         List<MeaningDto> meanings
 ) {}
