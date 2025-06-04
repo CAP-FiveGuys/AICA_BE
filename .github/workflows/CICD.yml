@@ -32,14 +32,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker (no-cache)
-        run: docker build --no-cache --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/aica_server .
-
-      - name: Push Docker with retry
-        run: |
-          for i in {1..5}; do
-            docker push ${{ secrets.DOCKERHUB_USERNAME }}/aica_server:latest && break || sleep 15
-          done
+      - name: Build Docker
+        run: docker build --platform linux/amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/aica_server .
+      - name: Push Docker
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/aica_server:latest
         
   deploy:
     needs: build
