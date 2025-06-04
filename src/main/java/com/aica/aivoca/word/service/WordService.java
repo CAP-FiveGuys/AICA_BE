@@ -112,7 +112,7 @@ public class WordService {
         List<VocabularyListWord> vocabWords = vocabularyListWordRepository.findByVocabularyList(vocaList);
 
         List<WordGetResponseDto> result = vocabWords.stream()
-                .map(vocabWord -> {
+                .flatMap(vocabWord -> {
                     Word word = vocabWord.getWord();
                     List<Meaning> meanings = meaningRepository.findAllByWord(word);
 
@@ -123,32 +123,28 @@ public class WordService {
                                         .toList();
 
                                 List<ExampleSentenceDto> examples = exampleSentenceRepository.findAllByMeaning(meaning).stream()
-                                        .map(ex -> new ExampleSentenceDto(
-                                                ex.getExamSentence(),
-                                                ex.getExamMeaning()
-                                        ))
+                                        .map(ex -> new ExampleSentenceDto(ex.getExamSentence(), ex.getExamMeaning()))
                                         .toList();
 
                                 return new MeaningDto(meaning.getMean(), parts, examples);
                             })
                             .toList();
-                    List<Long>sentenceIds = sentenceWordRepository
-                            .findByUserIdAndWordId(userId, word.getId())
-                            .stream()
-                            .map(SentenceWord::getSentenceId)
-                            .toList();
 
-                    return new WordGetResponseDto(
-                            word.getId(),
-                            sentenceIds,
-                            word.getWord(),
-                            meaningDtos
-                    );
+                    // 각 sentenceId 별로 Dto 반환
+                    return sentenceWordRepository.findByUserIdAndWordId(userId, word.getId())
+                            .stream()
+                            .map(sentenceWord -> new WordGetResponseDto(
+                                    word.getId(),
+                                    sentenceWord.getSentenceId(),
+                                    word.getWord(),
+                                    meaningDtos
+                            ));
                 })
                 .toList();
 
         return SuccessStatusResponse.of(SuccessMessage.GET_WORD_SUCCESS, result);
     }
+
 
     // ✅ 단어장 단어 삭제 + 단어-문장 테이블 에서도 삭제
     @Transactional
