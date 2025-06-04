@@ -57,16 +57,19 @@ public class WordService {
                     return newList;
                 });
 
-        if (vocabularyListWordRepository.existsByVocabularyListAndWord(vocaList, word)) {
-            throw new CustomException(ErrorMessage.WORD_ALREADY_IN_VOCABULARY);
+        boolean alreadyInVocabulary = vocabularyListWordRepository.existsByVocabularyListAndWord(vocaList, word);
+        SuccessMessage message;
+
+        if (!alreadyInVocabulary) {
+            VocabularyListWord link = VocabularyListWord.builder()
+                    .vocabularyList(vocaList)
+                    .word(word)
+                    .build();
+            vocabularyListWordRepository.save(link);
+            message = SuccessMessage.WORD_ADDED_TO_VOCABULARY;
+        } else {
+            message = SuccessMessage.WORD_ALREADY_IN_VOCABULARY;
         }
-
-        VocabularyListWord link = VocabularyListWord.builder()
-                .vocabularyList(vocaList)
-                .word(word)
-                .build();
-        vocabularyListWordRepository.save(link);
-
 
         // 문장-단어 연결 테이블에 추가
         SentenceWordId sentenceWordId = new SentenceWordId(
@@ -75,7 +78,7 @@ public class WordService {
                 requestDto.wordId()
         );
 
-        if(!sentenceWordRepository.existsById(sentenceWordId)){
+        if (!sentenceWordRepository.existsById(sentenceWordId)) {
             SentenceWord sentenceWord = SentenceWord.builder()
                     .sentenceId(requestDto.sentenceId())
                     .userId(userId)
@@ -84,7 +87,6 @@ public class WordService {
 
             sentenceWordRepository.save(sentenceWord);
         }
-
 
         List<Meaning> meanings = meaningRepository.findAllByWord(word);
 
@@ -97,10 +99,7 @@ public class WordService {
                 exampleSentenceRepository
         );
 
-        return SuccessStatusResponse.<List<WordResponseDto>>of(
-                SuccessMessage.WORD_ADDED_TO_VOCABULARY,
-                List.of(responseDto)
-        );
+        return SuccessStatusResponse.of(message, List.of(responseDto));
     }
 
 
