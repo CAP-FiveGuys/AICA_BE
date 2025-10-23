@@ -68,7 +68,8 @@ dependencies {
 	// OpenAI Java SDK 추가
 	implementation 'com.theokanning.openai-gpt3-java:client:0.12.0'
 
-
+	// spring-dotenv
+	implementation 'me.paulschwarz:spring-dotenv:2.2.0'
 }
 
 tasks.named('test') {
