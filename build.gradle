@@ -68,9 +68,12 @@ dependencies {
 	// OpenAI Java SDK 추가
 	implementation 'com.theokanning.openai-gpt3-java:client:0.12.0'
 
+	// Microsoft Azure speech service
 
+	implementation group: 'com.microsoft.cognitiveservices.speech', name: 'client-sdk', version: "1.43.0", ext: "jar"
+	// WebSocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
-
 tasks.named('test') {
 	useJUnitPlatform()
 }
