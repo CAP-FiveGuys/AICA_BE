@@ -16,16 +16,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 발음 평가를 위한 WebSocket 요청을 처리하는 핸들러입니다.
+ * 발음 평가를 위한 WebSocket 요청을 처리하는 핸들러
  */
 @Component
 public class PronunciationWebSocketHandler extends AbstractWebSocketHandler {
 
     private final PronunciationAssessmentService pronunciationService;
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    // 여러 클라이언트가 동시에 접속하므로, 각 세션별로 Recognizer와 오디오 스트림을 관리해야 합니다.
-    // ConcurrentHashMap은 멀티스레드 환경에서 안전하게 맵을 사용할 수 있도록 해줍니다.
     private final Map<String, SpeechRecognizer> recognizers = new ConcurrentHashMap<>();
     private final Map<String, PushAudioInputStream> audioStreams = new ConcurrentHashMap<>();
 
@@ -34,7 +31,7 @@ public class PronunciationWebSocketHandler extends AbstractWebSocketHandler {
     }
 
     /**
-     * 클라이언트와 WebSocket 연결이 성공적으로 수립되었을 때 호출됩니다.
+     * 클라이언트와 WebSocket 연결이 성공적으로 되었을 때 호출
      */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -45,8 +42,7 @@ public class PronunciationWebSocketHandler extends AbstractWebSocketHandler {
     }
 
     /**
-     * 클라이언트로부터 텍스트 메시지를 받았을 때 호출됩니다.
-     * (여기서는 평가할 단어를 JSON 형태로 받습니다)
+     * 클라이언트로부터 텍스트 메시지를 받았을 때 호출
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -65,8 +61,7 @@ public class PronunciationWebSocketHandler extends AbstractWebSocketHandler {
     }
 
     /**
-     * 클라이언트로부터 바이너리(binary) 메시지를 받았을 때 호출됩니다.
-     * (여기서는 마이크에서 온 오디오 데이터 조각을 받습니다)
+     * 클라이언트로부터 바이너리 메시지를 받았을 때 호출
      */
     @Override
     protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws Exception {
@@ -78,7 +73,7 @@ public class PronunciationWebSocketHandler extends AbstractWebSocketHandler {
     }
 
     /**
-     * 클라이언트와의 WebSocket 연결이 닫혔을 때 호출됩니다.
+     * 클라이언트와의 WebSocket 연결이 닫혔을 때 호출
      */
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
