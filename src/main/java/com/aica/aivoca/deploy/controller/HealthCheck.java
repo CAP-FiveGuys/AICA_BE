@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -36,4 +39,12 @@ public class HealthCheck {
     public ResponseEntity<?> getEnv() {
         return ResponseEntity.ok(env);
     }
+
+    @GetMapping("/debug/time")
+    public String checkServerTime() {
+        return "java.util.Date: " + new Date().toString() +
+                " | java.time.Instant.now(): " + Instant.now().toString() +
+                " | java.time.LocalDateTime.now(): " + LocalDateTime.now().toString();
+    }
 }
+
