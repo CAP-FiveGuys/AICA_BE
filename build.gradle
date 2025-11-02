@@ -73,6 +73,9 @@ dependencies {
 	implementation group: 'com.microsoft.cognitiveservices.speech', name: 'client-sdk', version: "1.43.0", ext: "jar"
 	// WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+	// jsoup
+	implementation 'org.jsoup:jsoup:1.18.1'
 }
 tasks.named('test') {
 	useJUnitPlatform()
