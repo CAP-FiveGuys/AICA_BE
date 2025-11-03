@@ -1,8 +1,8 @@
 package com.aica.aivoca.wordinfo.controller;
 
 import com.aica.aivoca.global.exception.dto.SuccessStatusResponse;
-import com.aica.aivoca.wordinfo.dto.WordInfoDto;
-import com.aica.aivoca.wordinfo.service.WordinfoService;
+import com.aica.aivoca.word.dto.WordGetResponseDto;
+import com.aica.aivoca.wordinfo.service.WordinfoSerpBridgeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +14,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WordinfoController {
 
-    private final WordinfoService WordinfoService;
+    private final WordinfoSerpBridgeService wordinfoSerpBridgeService;
 
     @GetMapping
-    public ResponseEntity<SuccessStatusResponse<List<WordInfoDto>>> lookupWord(@RequestParam String word) {
+    public ResponseEntity<SuccessStatusResponse<List<WordGetResponseDto>>> lookupWord(
+            @RequestParam String word
+    ) {
         return ResponseEntity.ok(
-                WordinfoService.lookupAndSaveWordIfNeeded(word)
+                // ✅ 무조건 “SERP 먼저 → 비면 GPT로 채우기 → 마지막에 기존 서비스로 다시 조회” 파이프라인
+                wordinfoSerpBridgeService.lookupAndSaveWordIfNeededUsingSerpFirst(word)
         );
     }
 }
