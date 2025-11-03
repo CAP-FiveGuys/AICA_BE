@@ -1,6 +1,6 @@
 FROM amazoncorretto:21-alpine-jdk
 
-RUN apk add --no-cache alsa-lib openssl-dev libstdc++ libuuid
+RUN apk add --no-cache alsa-lib openssl-dev libstdc++ libuuid gcompat
 
 ARG PROFILES
 ARG ENV
