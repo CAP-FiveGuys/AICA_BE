@@ -1,6 +1,10 @@
-FROM amazoncorretto:21-alpine-jdk
+FROM openjdk:21-slim-bookworm
 
-RUN apk add --no-cache alsa-lib openssl-dev libstdc++ libuuid gcompat
+RUN apt-get update && apt-get install -y \
+    libasound2 \
+    libssl3 \
+    libstdc++6 \
+    libuuid1
 
 ARG PROFILES
 ARG ENV
