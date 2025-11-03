@@ -20,7 +20,7 @@ public class Meaning {
     @JoinColumn(name = "word_id", nullable = false)
     private Word word;
 
-    @Column(name = "mean", nullable = false, length = 50)
+    @Column(name = "mean", nullable = false, length = 150)
     private String mean;
 
     @Builder
