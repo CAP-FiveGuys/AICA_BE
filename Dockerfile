@@ -1,8 +1,8 @@
-FROM amazoncorretto:21
+FROM openjdk:21-slim-bookworm
 
 RUN apt-get update && apt-get install -y \
     libasound2 \
-    libssl1.1 \
+    libssl3 \
     libstdc++6 \
     libuuid1
 
