@@ -1,7 +1,7 @@
-FROM openjdk:21-slim-bookworm
+FROM eclipse-temurin:21-jdk
 
 RUN apt-get update && apt-get install -y \
-    libasound2 \
+    libasound2t64 \
     libssl3 \
     libstdc++6 \
     libuuid1
