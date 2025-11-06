@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21-jdk-slim-bookworm
+FROM eclipse-temurin:21-jdk
 
 RUN apt-get update && apt-get install -y \
     libasound2 \
