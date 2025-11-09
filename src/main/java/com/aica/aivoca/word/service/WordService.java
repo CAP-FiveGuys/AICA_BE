@@ -29,7 +29,7 @@ public class WordService {
     private final VocabularyListRepository vocabularyListRepository;
     private final VocabularyListWordRepository vocabularyListWordRepository;
     private final MeaningRepository meaningRepository;
-    private final MeaningPartOfSpeechRepository mpsRepository;
+    private final MeaningPartOfSpeechRepository mpsRepository; // ❗️ [사용]
     private final ExampleSentenceRepository exampleSentenceRepository;
     private final SentenceWordRepository sentenceWordRepository;
 
@@ -37,6 +37,7 @@ public class WordService {
     private EntityManager em;
 
     // ✅ 단어장에 단어 추가 + 단어-문장테이블 추가
+    // (이 메서드는 WordResponseDto.from에 위임하므로 수정 불필요)
     @Transactional
     public SuccessStatusResponse<List<WordResponseDto>> addWordToVocabulary(WordAddRequestDto requestDto, Long userId) {
         Users user = usersRepository.findById(userId)
@@ -71,7 +72,6 @@ public class WordService {
             message = SuccessMessage.WORD_ALREADY_IN_VOCABULARY;
         }
 
-        // 문장-단어 연결 테이블에 추가
         SentenceWordId sentenceWordId = new SentenceWordId(
                 requestDto.sentenceId(),
                 userId,
@@ -90,6 +90,9 @@ public class WordService {
 
         List<Meaning> meanings = meaningRepository.findAllByWord(word);
 
+        // ❗️ (참고) WordResponseDto.from 메서드 내부에서도
+        // ❗️ 'getMyVocabularyWords'와 동일하게 mpsRepository.findAllByMeaning... .getName()을
+        // ❗️ 사용해야 품사가 올바르게 표시됩니다.
         WordResponseDto responseDto = WordResponseDto.from(
                 user.getId(),
                 sentence.getId(),
@@ -103,7 +106,10 @@ public class WordService {
     }
 
 
-    // ✅ 단어장 전체 단어 조회 + 문장아이디 추가
+    /**
+     * ❗️ [수정] getMyVocabularyWords (v3 - 팀원 방식)
+     * - DTO 변환 시 mpsRepository를 JOIN하여 'name'을 읽어오도록 수정
+     */
     @Transactional(readOnly = true)
     public SuccessStatusResponse<List<WordGetResponseDto>> getMyVocabularyWords(Long userId) {
         VocabularyList vocaList = vocabularyListRepository.findByUsers_Id(userId)
@@ -118,9 +124,12 @@ public class WordService {
 
                     List<MeaningDto> meaningDtos = meanings.stream()
                             .map(meaning -> {
+
+                                // --- ❗️ [수정] DTO의 List<String> parts 생성 로직 ---
                                 List<String> parts = mpsRepository.findAllByMeaning(meaning).stream()
-                                        .map(mp -> mp.getPartOfSpeech().getName())
+                                        .map(mp -> mp.getPartOfSpeech().getName()) // 예: "한정사, 대명사"
                                         .toList();
+                                // --- [수정] 끝 ---
 
                                 List<ExampleSentenceDto> examples = exampleSentenceRepository.findAllByMeaning(meaning).stream()
                                         .map(ex -> new ExampleSentenceDto(ex.getExamSentence(), ex.getExamMeaning()))
@@ -130,7 +139,7 @@ public class WordService {
                             })
                             .toList();
 
-                    // 각 sentenceId 별로 Dto 반환
+                    // 각 sentenceId 별로 Dto 반환 (이하 동일)
                     return sentenceWordRepository.findByUserIdAndWordId(userId, word.getId())
                             .stream()
                             .map(sentenceWord -> new WordGetResponseDto(
@@ -147,6 +156,7 @@ public class WordService {
 
 
     // ✅ 단어장 단어 삭제 + 단어-문장 테이블 에서도 삭제
+    // (이 메서드는 수정 불필요)
     @Transactional
     public SuccessStatusResponse<Void> deleteWordFromVocabulary(Long wordId, Long userId) {
         VocabularyList vocaList = vocabularyListRepository.findByUsers_Id(userId)
